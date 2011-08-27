@@ -11,11 +11,6 @@ NSString *const kADBackgroundImageKey = @"ADBackgroundImage";
 
 @implementation A2BackgroundTableView
 
-- (CGFloat) extraBleedRoom {
-	static CGFloat _extraBleedRoom = 0.0;
-	return (_extraBleedRoom ?: (_extraBleedRoom = 1.5 * CGRectGetHeight(self.bounds)));
-}
-
 - (id) initWithBackgroundImage: (UIImage *) tile
 {
 	return [self initWithFrame: CGRectZero backgroundImage: tile];
@@ -61,19 +56,19 @@ NSString *const kADBackgroundImageKey = @"ADBackgroundImage";
 	CGFloat h = MAX(CGRectGetHeight(self.bounds), contentSize.height);
 	if (_lastConfiguredHeight != h)
 	{
-		CGFloat bleed = [self extraBleedRoom];
+		if (!_extraBleedRoom) _extraBleedRoom = 2 * CGRectGetHeight(self.bounds);
 		
 		if (_backgroundLayer)
 		{
 			CGRect r = _backgroundLayer.frame;
-			r.size.height = h + 2 * bleed;
+			r.size.height = h + 2 * _extraBleedRoom;
 			_backgroundLayer.frame = r;
 		}
 		else
 		{
 			_backgroundLayer = [[CALayer layer] retain];
 			_backgroundLayer.backgroundColor = [UIColor colorWithPatternImage: _backgroundImage].CGColor;
-			_backgroundLayer.frame = CGRectMake(0, -bleed, CGRectGetWidth(self.bounds), h + 2 * bleed);
+			_backgroundLayer.frame = CGRectMake(0, -_extraBleedRoom, CGRectGetWidth(self.bounds), h + 2 * _extraBleedRoom);
 			_backgroundLayer.zPosition = -1.0;
 			[self.layer addSublayer: _backgroundLayer];
 		}

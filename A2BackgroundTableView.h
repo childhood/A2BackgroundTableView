@@ -5,14 +5,14 @@
 //  Copyright 2011 Pandamonia LLC. All rights reserved.
 //
 
-#import <UIKit/UITableView.h>
+#import <UIKit/UIKit.h>
 
 @interface A2BackgroundTableView : UITableView
 {
-@private
 	CALayer *_backgroundLayer;
-	UIImage *_backgroundImage;
+	CGFloat _extraBleedRoom;
 	CGFloat _lastConfiguredHeight;
+	UIImage *_backgroundImage;
 }
 
 - (id) initWithBackgroundImage: (UIImage *) tile;
